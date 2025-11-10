@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>بولد لنوفا — الموقع الرسمي</title>
+  <meta name="description" content="الموقع الرسمي لشركة بولد لنوفا لخدمات الاشتراكات الرقمية" />
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --muted: #4b5563;
+      --accent: #1e40af;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; background: var(--bg); color: #111; }
+    a { text-decoration: none; color: inherit; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    header { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; position: sticky; top: 0; background: var(--bg); z-index: 1000; border-bottom: 1px solid #e5e7eb; }
+    .brand { font-weight: 700; font-size: 22px; color: #111; }
+    nav ul { display: flex; gap: 18px; list-style: none; padding: 0; margin: 0; }
+    nav li { cursor: pointer; font-weight: 500; }
+    .cta { background: var(--accent); padding: 10px 16px; border-radius: 8px; color: #fff; font-weight: 600; }
+
+    section { display: none; padding: 50px 0; min-height: 75vh; transition: opacity 0.5s ease; }
+    section.active { display: block; opacity: 1; }
+
+    h1,h2,h3 { margin: 0 0 14px; }
+    p.lead { color: var(--muted); font-size: 16px; }
+
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 24px; margin-top: 30px; }
+    .plan-card { background: var(--card); padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 10px; }
+    .plan-card h3 { margin: 0; text-align: center; color: var(--accent); font-size: 18px; }
+    .plan-card p { margin: 0; text-align: center; font-size: 14px; color: #1f2937; }
+    .select-btn { background: var(--accent); color: #fff; border: 0; padding: 10px 14px; border-radius: 8px; cursor: pointer; align-self: center; margin-top: 12px; font-weight: 600; }
+
+    footer { text-align: center; padding: 20px 0; font-size: 14px; color: var(--muted); border-top: 1px solid #e5e7eb; margin-top: 40px; }
+
+    @media(max-width:768px){
+      nav ul { flex-direction: column; display: none; gap: 12px; }
+      nav ul.show { display: flex; }
+      .mobile-toggle { display: block; background: transparent; border: 1px solid #d1d5db; padding: 8px; border-radius: 8px; cursor: pointer; }
+    }
+    .mobile-toggle { display: none; }
+    form input, form textarea { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    form button { background: var(--accent); color: #fff; padding: 10px 16px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">بولد لنوفا</div>
+      <nav>
+        <button class="mobile-toggle" id="toggle">☰</button>
+        <ul id="menu">
+          <li data-section="home">الرئيسية</li>
+          <li data-section="about">من نحن</li>
+          <li data-section="services">الخدمات</li>
+          <li data-section="contact">تواصل معنا</li>
+        </ul>
+      </nav>
+      <a class="cta" data-section="contact">ابدأ الآن</a>
+    </header>
+
+    <section id="home" class="active">
+      <h1>مرحباً بكم في بولد لنوفا</h1>
+      <p class="lead">نحن في بولد لنوفا نقدم خدمات اشتراكات رقمية مميزة واحترافية، مع التركيز على الجودة وتجربة المستخدم المتميزة، لتلبية كافة احتياجات عملائنا.</p>
+    </section>
+
+    <section id="about">
+      <h2>من نحن</h2>
+      <p class="lead">شركة <strong>بولد لنوفا</strong> متخصصة في تقديم اشتراكات رقمية احترافية. أسسها <strong>المهندس حمد الشمري</strong> ويقودها رئيس مجلس الإدارة والرئيس التنفيذي <strong>الأستاذ طلال سلامة المطيري</strong>. نحن ملتزمون بالابتكار والجودة العالية لتقديم خدمات رقمية متكاملة وموثوقة.</p>
+    </section>
+
+    <section id="services">
+      <h2>خدماتنا وخطط الاشتراك</h2>
+      <div id="plans-container" class="plans-grid"></div>
+    </section>
+
+    <section id="contact">
+      <h2>تواصل معنا</h2>
+      <form>
+        <input type="text" placeholder="الاسم" required />
+        <input type="email" placeholder="البريد الإلكتروني" required />
+        <textarea rows="4" placeholder="رسالتك" required></textarea>
+        <button type="submit">أرسل</button>
+      </form>
+    </section>
+
+    <footer>© جميع الحقوق محفوظة — بولد لنوفا</footer>
+  </div>
+
+  <script>
+    const links = document.querySelectorAll('[data-section]');
+    const sections = document.querySelectorAll('section');
+    links.forEach(link => {
+      link.addEventListener('click',()=>{
+        const target = link.getAttribute('data-section');
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+      });
+    });
+
+    const toggle = document.getElementById('toggle');
+    const menu = document.getElementById('menu');
+    toggle.addEventListener('click',()=>{ menu.classList.toggle('show'); });
+
+    const form = document.querySelector('form');
+    form.addEventListener('submit',(e)=>{ e.preventDefault(); alert('تم استلام رسالتك (محاكاة)'); form.reset(); });
+
+    const TAX_RATE = 0.15;
+    const plans = [
+      { period: "1 شهر", tiers: [
+        { name: "لايت", base: 15, quality: "SD", adult: "❌", sports: "❌", ads: "❌", support: "عادي", exclusive: "❌" },
+        { name: "أساسي", base: 20, quality: "HD", adult: "❌", sports: "❌", ads: "✅ محدود", support: "عادي", exclusive: "❌" },
+        { name: "إكسترا", base: 31, quality: "Full HD", adult: "✅ جزئيًا", sports: "✅ محدود", ads: "✅ جزئيًا", support: "سريع", exclusive: "✅ جزئيًا" },
+        { name: "ديلوكس", base: 56, quality: "4K + HDR", adult: "✅ كامل", sports: "✅ كامل", ads: "✅", support: "فوري", exclusive: "✅ كامل" },
+        { name: "بريميوم بلس", base: 79, quality: "4K + HDR + صوت محيطي", adult: "✅ كامل", sports: "✅ كامل", ads: "✅", support: "فوري VIP", exclusive: "✅ حصري جدًا" }
+      ]},
+      { period: "3 شهور", tiers: [
+        { name: "لايت", base: 85, quality: "SD", adult: "❌", sports: "❌", ads: "❌", support: "عادي", exclusive: "❌" },
+        { name: "أساسي", base: 115, quality: "HD", adult: "❌", sports: "❌", ads: "✅ محدود", support: "عادي", exclusive: "❌" },
+        { name: "إكسترا", base: 135, quality: "Full HD", adult: "✅ جزئيًا", sports: "✅ محدود", ads: "✅ جزئيًا", support: "سريع", exclusive: "✅ جزئيًا" },
+        { name: "ديلوكس", base: 175, quality: "4K + HDR", adult: "✅ كامل", sports: "✅ كامل", ads: "✅", support: "فوري", exclusive: "✅ كامل" },
+        { name: "بريميوم بلس", base: 245, quality: "4K + HDR + صوت محيطي", adult: "✅ كامل", sports: "✅ كامل", ads: "✅", support: "فوري VIP", exclusive: "✅ حصري جدًا" }
+      ]},
+      { period: "6 شهور", tiers: [
+        { name: "لايت", base: 159, quality: "SD", adult: "❌", sports: "❌", ads: "❌", support: "عادي", exclusive: "❌" },
+        { name: "أساسي", base: 279, quality: "HD", adult: "❌", sports: "❌", ads: "✅ محدود", support: "عادي", exclusive: "❌" },
+        { name: "إكسترا", base: 295, quality: "Full HD", adult: "✅ جزئيًا", sports: "✅ محدود", ads: "✅ جزئيًا", support: "سريع", exclusive: "✅ جزئيًا" },
+        { name: "ديلوكس", base: 379, quality: "4K + HDR", adult: "✅ كامل", sports: "✅ كامل", ads: "✅", support: "فوري", exclusive: "✅ كامل" },
+        { name: "بريميوم بلس", base: 459, quality: "4K + HDR + صوت محيطي", adult: "✅ كامل", sports: "✅ كامل", ads: "✅", support: "فوري VIP", exclusive: "✅ حصري جدًا" }
+      ]},
+      { period: "12 شهر", tiers: [
+        { name: "لايت", base: 295, quality: "SD", adult: "❌", sports: "❌", ads: "❌", support: "عادي", exclusive: "❌" },
+        { name: "أساسي", base: 473, quality: "HD", adult: "❌", sports: "❌", ads: "✅ محدود", support: "عادي", exclusive: "❌" },
+        { name: "إكسترا", base: 525, quality: "Full HD", adult: "✅ جزئيًا", sports: "✅ محدود", ads: "✅ جزئيًا", support: "سريع", exclusive: "✅ جزئيًا" },
+        { name: "ديلوكس", base: 703, quality: "4K + HDR", adult: "✅ كامل", sports: "✅ كامل", ads: "✅", support: "فوري", exclusive: "✅ كامل" },
+        { name: "بريميوم بلس", base: 852, quality: "4K + HDR + صوت محيطي", adult: "✅ كامل", sports: "✅ كامل", ads: "✅", support: "فوري VIP", exclusive: "✅ حصري جدًا" }
+      ]}
+    ];
+
+    const container = document.getElementById('plans-container');
+    plans.forEach(plan => {
+      plan.tiers.forEach(tier => {
+        const total = (tier.base * (1 + TAX_RATE)).toFixed(2);
+        const card = document.createElement('div');
+        card.classList.add('plan-card');
+        card.innerHTML = `
+          <h3>${tier.name} - ${plan.period}</h3>
+          <p>السعر: ${tier.base} ريال</p>
+          <p>السعر شامل الضريبة: ${total} ريال</p>
+          <p>الجودة: ${tier.quality}</p>
+          <p>محتوى للكبار: ${tier.adult}</p>
+          <p>رياضة: ${tier.sports}</p>
+          <p>إعلانات: ${tier.ads}</p>
+          <p>الدعم: ${tier.support}</p>
+          <p>حصري: ${tier.exclusive}</p>
+          <button class="select-btn">اختر هذه الباقة</button>
+        `;
+        container.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>
